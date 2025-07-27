@@ -11,7 +11,7 @@ ifdef BOARD_DIR
 BOARD ?= $(notdir $(BOARD_DIR:/=))
 else
 # If not given on the command line, then default to ESP32_GENERIC.
-BOARD ?= ESP32_GENERIC
+BOARD ?= FireBeetle_2_ESP32_P4
 BOARD_DIR ?= boards/$(BOARD)
 endif
 
@@ -43,8 +43,8 @@ PYTHON ?= python3
 
 .PHONY: all clean deploy erase submodules FORCE
 
-CMAKE_ARGS =
-
+#CMAKE_ARGS =
+CMAKE_ARGS = -D MICROPY_FFMPEG=1 -D FFMPEG_LIBS="-lavformat -lavcodec -lavutil -lswscale -lm -lz -lpthread"
 ifdef USER_C_MODULES
 	CMAKE_ARGS += -DUSER_C_MODULES=${USER_C_MODULES}
 endif

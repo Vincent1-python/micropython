@@ -39,7 +39,11 @@
 #include "driver/sdspi_host.h"
 #include "sdmmc_cmd.h"
 #include "esp_log.h"
-
+#if MP_SD_LDO
+#include "esp_ldo_regulator.h"
+#include "sd_pwr_ctrl_by_on_chip_ldo.h"
+static sd_pwr_ctrl_handle_t pwr_ctrl_handle;
+#endif
 #define DEBUG 0
 #if DEBUG
 #define DEBUG_printf(...) ESP_LOGI("modsdcard", __VA_ARGS__)
@@ -406,9 +410,20 @@ static mp_obj_t machine_sdcard_make_new(const mp_obj_type_t *type, size_t n_args
             }
         }
         #endif
-
-        DEBUG_printf("  Calling init_slot()");
-        check_esp_err(sdmmc_host_init_slot(self->host.slot, &slot_config));
+        #if MP_SD_LDO
+        
+	sd_pwr_ctrl_ldo_config_t ldo_config = {
+        .ldo_chan_id = 4,
+        };
+        esp_err_t ret = sd_pwr_ctrl_new_on_chip_ldo(&ldo_config, &pwr_ctrl_handle);
+        if (ret != ESP_OK) {
+	    mp_raise_ValueError(MP_ERROR_TEXT("Failed to create a new on-chip LDO power control driver"));
+	    //return ret;
+        }
+        self->host.pwr_ctrl_handle = pwr_ctrl_handle;
+        #endif
+	DEBUG_printf("  Calling init_slot()");
+	check_esp_err(sdmmc_host_init_slot(self->host.slot, &slot_config));
     }
     #endif // SOC_SDMMC_HOST_SUPPORTED
 
@@ -420,7 +435,14 @@ static mp_obj_t sd_deinit(mp_obj_t self_in) {
     sdcard_card_obj_t *self = self_in;
 
     DEBUG_printf("De-init host\n");
+    #if MP_SD_LDO
+    esp_err_t ret = ESP_OK;
 
+    if (pwr_ctrl_handle) {
+        ret |= sd_pwr_ctrl_del_on_chip_ldo(pwr_ctrl_handle);
+        pwr_ctrl_handle = NULL;
+    }
+    #endif
     if (self->flags & SDCARD_CARD_FLAGS_HOST_INIT_DONE) {
         if (self->host.flags & SDMMC_HOST_FLAG_DEINIT_ARG) {
             self->host.deinit_p(self->host.slot);

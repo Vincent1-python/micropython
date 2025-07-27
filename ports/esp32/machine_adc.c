@@ -32,7 +32,7 @@
 #include "py/mphal.h"
 #include "adc.h"
 #include "driver/adc.h"
-
+//#define MICROPY_PY_MACHINE_ADC_INCLUDEFILE "adc.h"
 #define ADCBLOCK1 (&madcblock_obj[0])
 #define ADCBLOCK2 (&madcblock_obj[1])
 
@@ -133,12 +133,12 @@ static const machine_adc_obj_t madc_obj[] = {
     {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_5, GPIO_NUM_21},
     {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_6, GPIO_NUM_22},
     {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_7, GPIO_NUM_23},
-    {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_8, GPIO_NUM_49},
-    {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_9, GPIO_NUM_50},
-    {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_10, GPIO_NUM_51},
-    {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_11, GPIO_NUM_52},
-    {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_12, GPIO_NUM_53},
-    {{&machine_adc_type}, ADCBLOCK1, ADC_CHANNEL_13, GPIO_NUM_54},
+    {{&machine_adc_type}, ADCBLOCK2, ADC_CHANNEL_0, GPIO_NUM_49},
+    {{&machine_adc_type}, ADCBLOCK2, ADC_CHANNEL_1, GPIO_NUM_50},
+    {{&machine_adc_type}, ADCBLOCK2, ADC_CHANNEL_2, GPIO_NUM_51},
+    {{&machine_adc_type}, ADCBLOCK2, ADC_CHANNEL_3, GPIO_NUM_52},
+    {{&machine_adc_type}, ADCBLOCK2, ADC_CHANNEL_4, GPIO_NUM_53},
+    {{&machine_adc_type}, ADCBLOCK2, ADC_CHANNEL_5, GPIO_NUM_54},
     #endif
 };
 

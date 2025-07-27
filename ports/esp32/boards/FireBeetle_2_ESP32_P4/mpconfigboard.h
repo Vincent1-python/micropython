@@ -2,7 +2,7 @@
 // specified.
 
 #ifndef MICROPY_HW_BOARD_NAME
-#define MICROPY_HW_BOARD_NAME "Generic ESP32P4 module"
+#define MICROPY_HW_BOARD_NAME "FireBeetle 2 ESP32 P4"
 #endif
 
 #ifndef MICROPY_HW_MCU_NAME
@@ -15,18 +15,11 @@
 
 #define MICROPY_HW_ENABLE_USB_RUNTIME_DEVICE 	(0)
 #define MICROPY_HW_ENABLE_USBDEV				(0)
-#define MICROPY_PY_TINYUSB                      (0)
+
 #define MICROPY_PY_ESPNOW         	(0)
 
-#define MICROPY_PY_MACHINE_ADC              (0)
-#define MICROPY_PY_MACHINE_ADC_ATTEN_WIDTH  (0)
-#define MICROPY_PY_MACHINE_ADC_INIT         (0)
-#define MICROPY_PY_MACHINE_ADC_READ         (0)
-#define MICROPY_PY_MACHINE_ADC_READ_UV      (0)
-#define MICROPY_PY_MACHINE_ADC_BLOCK        (0)
-
-
-
+#define MICROPY_PY_MACHINE_ADC              (1)
+#define MP_SD_LDO                           (1)
 #ifndef USB_SERIAL_JTAG_PACKET_SZ_BYTES
 #define USB_SERIAL_JTAG_PACKET_SZ_BYTES (64)
 #endif

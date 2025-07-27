@@ -38,19 +38,17 @@
 
 #include "modmachine.h"
 #include "machine_rtc.h"
-
 #if MICROPY_HW_ENABLE_SDCARD
 #define MICROPY_PY_MACHINE_SDCARD_ENTRY { MP_ROM_QSTR(MP_QSTR_SDCard), MP_ROM_PTR(&machine_sdcard_type) },
 #else
 #define MICROPY_PY_MACHINE_SDCARD_ENTRY
 #endif
 
-#if SOC_TOUCH_SENSOR_SUPPORTED &&  !CONFIG_IDF_TARGET_ESP32P4
+#if SOC_TOUCH_SENSOR_SUPPORTED && !CONFIG_IDF_TARGET_ESP32P4
 #define MICROPY_PY_MACHINE_TOUCH_PAD_ENTRY { MP_ROM_QSTR(MP_QSTR_TouchPad), MP_ROM_PTR(&machine_touchpad_type) },
 #else
 #define MICROPY_PY_MACHINE_TOUCH_PAD_ENTRY
 #endif
-
 
 #define MICROPY_PY_MACHINE_EXTRA_GLOBALS \
     { MP_ROM_QSTR(MP_QSTR_sleep), MP_ROM_PTR(&machine_lightsleep_obj) }, \
@@ -60,6 +58,7 @@
     { MP_ROM_QSTR(MP_QSTR_Pin), MP_ROM_PTR(&machine_pin_type) }, \
     MICROPY_PY_MACHINE_TOUCH_PAD_ENTRY \
     { MP_ROM_QSTR(MP_QSTR_RTC), MP_ROM_PTR(&machine_rtc_type) }, \
+    { MP_ROM_QSTR(MP_QSTR_ADC), MP_ROM_PTR(&machine_adc_type) }, \
     \
     /* wake abilities */ \
     { MP_ROM_QSTR(MP_QSTR_SLEEP), MP_ROM_INT(MACHINE_WAKE_SLEEP) }, \

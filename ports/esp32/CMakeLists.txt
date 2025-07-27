@@ -60,6 +60,11 @@ set(SDKCONFIG_DEFAULTS ${CMAKE_BINARY_DIR}/sdkconfig.combined)
 
 # Include main IDF cmake file.
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-
+include_directories(${IDF_PATH}components/esp_littlefs/src/littlefs)
+#include_directories($~/esp/micropython/extmod)
+#include_directories(${IDF_PATH}/components/esp_lcd/include)
+#include_directories(${IDF_PATH}/components/esp_lcd/dsi/include)
+#include_directories(${IDF_PATH}/components/esp_lcd/rgb/include)
 # Define the project.
 project(micropython)
+# target_link_libraries(${PROJECT_NAME} -lavformat -lavcodec -lavutil -lswscale -lm -lz -lpthread)

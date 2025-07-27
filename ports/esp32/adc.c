@@ -25,9 +25,6 @@
  * THE SOFTWARE.
  */
 
-#if MICROPY_PY_MACHINE_ADC
-
-
 #include "py/mphal.h"
 #include "adc.h"
 #include "driver/adc.h"
@@ -90,13 +87,16 @@ static esp_err_t ensure_adc_calibration(machine_adc_block_obj_t *self, adc_atten
         .bitwidth = self->width,
     };
     return adc_cali_create_scheme_curve_fitting(&cali_config, &self->handle[atten]);
-    #else
+    #elif ADC_CALI_SCHEME_LINE_FITTING_SUPPORTED
     adc_cali_line_fitting_config_t cali_config = {
         .unit_id = self->unit_id,
         .atten = atten,
         .bitwidth = self->width,
     };
     return adc_cali_create_scheme_line_fitting(&cali_config, &self->handle[atten]);
+
+    #else
+    return ESP_OK;
     #endif
 }
 
@@ -109,5 +109,3 @@ mp_int_t madcblock_read_uv_helper(machine_adc_block_obj_t *self, adc_channel_t c
 
     return (mp_int_t)uv * 1000;
 }
-
-#endif // MICROPY_PY_MACHINE_ADC

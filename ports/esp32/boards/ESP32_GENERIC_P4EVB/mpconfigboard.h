@@ -15,7 +15,7 @@
 
 #define MICROPY_HW_ENABLE_USB_RUNTIME_DEVICE 	(0)
 #define MICROPY_HW_ENABLE_USBDEV				(0)
-#define MICROPY_PY_TINYUSB                      (0)
+
 #define MICROPY_PY_ESPNOW         	(0)
 
 #define MICROPY_PY_MACHINE_ADC              (0)

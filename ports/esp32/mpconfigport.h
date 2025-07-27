@@ -121,7 +121,7 @@
 #define MICROPY_PY_MACHINE_BARE_METAL_FUNCS (1)
 #define MICROPY_PY_MACHINE_DISABLE_IRQ_ENABLE_IRQ (1)
 
-#ifndef CONFIG_IDF_TARGET_ESP32P4
+//#ifndef CONFIG_IDF_TARGET_ESP32P4
 #define MICROPY_PY_MACHINE_ADC              (1)
 #define MICROPY_PY_MACHINE_ADC_INCLUDEFILE  "ports/esp32/machine_adc.c"
 #define MICROPY_PY_MACHINE_ADC_ATTEN_WIDTH  (1)
@@ -129,7 +129,7 @@
 #define MICROPY_PY_MACHINE_ADC_READ         (1)
 #define MICROPY_PY_MACHINE_ADC_READ_UV      (1)
 #define MICROPY_PY_MACHINE_ADC_BLOCK        (1)
-#endif
+//#endif
 
 #define MICROPY_PY_MACHINE_ADC_BLOCK_INCLUDEFILE "ports/esp32/machine_adc_block.c"
 #define MICROPY_PY_MACHINE_PIN_MAKE_NEW     mp_pin_make_new
@@ -150,6 +150,8 @@
 #ifndef MICROPY_PY_MACHINE_I2S
 #define MICROPY_PY_MACHINE_I2S              (SOC_I2S_SUPPORTED)
 #endif
+#define MICROPY_PY_MACHINE_PDM              (SOC_I2S_SUPPORTS_PDM_RX)
+#define MICROPY_PY_MACHINE_I2S_PDM_RX       ((I2S_DIR_RX) | (BIT(2)))
 #define MICROPY_PY_MACHINE_I2S_INCLUDEFILE  "ports/esp32/machine_i2s.c"
 #define MICROPY_PY_MACHINE_I2S_FINALISER    (1)
 #define MICROPY_PY_MACHINE_I2S_CONSTANT_RX  (I2S_DIR_RX)
@@ -403,3 +405,7 @@ void boardctrl_startup(void);
 #ifndef MICROPY_ESP_IDF_ENTRY
 #define MICROPY_ESP_IDF_ENTRY app_main
 #endif
+// Required for LVGL
+#define MICROPY_ENABLE_SCHEDULER       (1)
+#define MICROPY_MODULE_BUILTIN_INIT    (1)
+#define MICROPY_PY_SYS_SETTRACE        (0)
