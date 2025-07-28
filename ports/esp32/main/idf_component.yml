@@ -10,19 +10,19 @@ dependencies:
   #esp32_p4_function_ev_board: ^3
   espressif/esp_cam_sensor: ">=0.5.*"
     rules:
-        - if: "target in [esp32p4]"
+      - if: "target in [esp32p4]"
   sensor_init:
     path: ${IDF_PATH}/examples/peripherals/camera/common_components/sensor_init
     rules:
-        - if: "target in [esp32p4]"
+      - if: "target in [esp32p4]"
   espressif/esp_hosted: 
     version: 1.4.0
     rules:
-        - if: "target in [esp32p4]"
+      - if: "target in [esp32p4]"
   espressif/esp_wifi_remote: 
     version: 0.8.5
     rules:
-        - if: "target in [esp32p4]"
+      - if: "target in [esp32p4]"
   espressif/lan867x:
     version: "~1.0.0"
     rules:
