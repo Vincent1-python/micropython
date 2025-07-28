@@ -44,7 +44,8 @@
 #define MICROPY_PY_MACHINE_SDCARD_ENTRY
 #endif
 
-#if SOC_TOUCH_SENSOR_SUPPORTED && !CONFIG_IDF_TARGET_ESP32P4
+#if SOC_TOUCH_SENSOR_SUPPORTED //&& !CONFIG_IDF_TARGET_ESP32P4
+extern const mp_obj_type_t machine_touchpad_type;
 #define MICROPY_PY_MACHINE_TOUCH_PAD_ENTRY { MP_ROM_QSTR(MP_QSTR_TouchPad), MP_ROM_PTR(&machine_touchpad_type) },
 #else
 #define MICROPY_PY_MACHINE_TOUCH_PAD_ENTRY

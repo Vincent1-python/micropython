@@ -162,6 +162,7 @@ list(APPEND IDF_COMPONENTS
     esp_adc
     esp_app_format
     esp_common
+    esp_driver_touch_sens
     esp_eth
     esp_event
     esp_hw_support
