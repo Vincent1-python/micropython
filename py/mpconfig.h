@@ -1469,7 +1469,7 @@ typedef double mp_float_t;
 
 // Whether to provide "io.IOBase" class to support user streams
 #ifndef MICROPY_PY_IO_IOBASE
-#define MICROPY_PY_IO_IOBASE (MICROPY_CONFIG_ROM_LEVEL_AT_LEAST_CORE_FEATURES)
+#define MICROPY_PY_IO_IOBASE (MICROPY_CONFIG_ROM_LEVEL_AT_LEAST_EXTRA_FEATURES)
 #endif
 
 // Whether to provide "io.BytesIO" class
@@ -2115,12 +2115,8 @@ typedef double mp_float_t;
 #endif // INT_FMT
 
 // Modifier for function which doesn't return
-#ifndef MP_NORETURN
-#define MP_NORETURN __attribute__((noreturn))
-#endif
-
-#if !MICROPY_PREVIEW_VERSION_2
-#define NORETURN MP_NORETURN
+#ifndef NORETURN
+#define NORETURN __attribute__((noreturn))
 #endif
 
 // Modifier for weak functions

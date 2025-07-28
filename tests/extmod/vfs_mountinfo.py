@@ -5,6 +5,7 @@ try:
 except ImportError:
     print("SKIP")
     raise SystemExit
+import errno
 
 
 class Filesystem:

@@ -86,7 +86,7 @@ MP_DECLARE_CONST_FUN_OBJ_VAR_BETWEEN(esp_network_phy_mode_obj);
 
 mp_obj_t esp_ifname(esp_netif_t *netif);
 
-MP_NORETURN void esp_exceptions_helper(esp_err_t e);
+void esp_exceptions_helper(esp_err_t e);
 
 static inline void esp_exceptions(esp_err_t e) {
     if (e != ESP_OK) {

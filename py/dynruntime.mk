@@ -124,10 +124,6 @@ else
 $(error architecture '$(ARCH)' not supported)
 endif
 
-ifneq ($(findstring -musl,$(shell $(CROSS)gcc -dumpmachine)),)
-USE_MUSL := 1
-endif
-
 MICROPY_FLOAT_IMPL_UPPER = $(shell echo $(MICROPY_FLOAT_IMPL) | tr '[:lower:]' '[:upper:]')
 CFLAGS += $(CFLAGS_ARCH) -DMICROPY_FLOAT_IMPL=MICROPY_FLOAT_IMPL_$(MICROPY_FLOAT_IMPL_UPPER)
 
@@ -150,8 +146,6 @@ ifeq ($(LINK_RUNTIME),1)
 # version (that hopefully contains a newer RISC-V compiler) or to another Linux
 # distribution.
 ifeq ($(USE_PICOLIBC),1)
-LIBM_NAME := libc.a
-else ifeq ($(USE_MUSL),1)
 LIBM_NAME := libc.a
 else
 LIBM_NAME := libm.a
