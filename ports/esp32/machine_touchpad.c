@@ -132,10 +132,12 @@ static mp_obj_t mtp_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_
         touch_pad_init();
         touch_pad_set_fsm_mode(TOUCH_FSM_MODE_TIMER);
     #elif SOC_TOUCH_SENSOR_VERSION == 3
-    	touch_sensor_sample_config_t sample_cfg[1] = {
+    	touch_sensor_sample_config_t sample_cfg[3] = {
 		TOUCH_SENSOR_V3_DEFAULT_SAMPLE_CONFIG(1, 1, 1),
+        	TOUCH_SENSOR_V3_DEFAULT_SAMPLE_CONFIG(2, 1, 1),
+        	TOUCH_SENSOR_V3_DEFAULT_SAMPLE_CONFIG(4, 1, 1),
 	};
-	touch_sensor_config_t sens_cfg = TOUCH_SENSOR_DEFAULT_BASIC_CONFIG(1, sample_cfg);
+	touch_sensor_config_t sens_cfg = TOUCH_SENSOR_DEFAULT_BASIC_CONFIG(3, sample_cfg);
         esp_err_t err = touch_sensor_new_controller(&sens_cfg, &s_sens_handle);
 	if (err != ESP_OK) {
     	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 1"));
@@ -147,9 +149,7 @@ static mp_obj_t mtp_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_
     	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 2"));
     	}
         touch_channel_config_t chan_cfg = {
-        .active_thresh = {
-            1000,       // estimated active threshold of sample configuration 0
-            },
+        .active_thresh = {1000, 2500, 5000},
         };
         
         for(i = 0; i < 14; i++) {
