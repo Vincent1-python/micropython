@@ -189,6 +189,8 @@ list(APPEND IDF_COMPONENTS
     ulp
     usb
     vfs
+    tinyusb
+    esp_tinyusb
 )
 
 # Provide the default LD fragment if not set

@@ -43,7 +43,8 @@
 #else
 #define MICROPY_PY_MACHINE_SDCARD_ENTRY
 #endif
-
+extern const mp_obj_type_t machine_usb_host_type;
+extern const mp_obj_type_t machine_usb_host_type;
 #if SOC_TOUCH_SENSOR_SUPPORTED //&& !CONFIG_IDF_TARGET_ESP32P4
 extern const mp_obj_type_t machine_touchpad_type;
 #define MICROPY_PY_MACHINE_TOUCH_PAD_ENTRY { MP_ROM_QSTR(MP_QSTR_TouchPad), MP_ROM_PTR(&machine_touchpad_type) },
@@ -216,27 +217,41 @@ static mp_int_t mp_machine_reset_cause(void) {
 }
 
 #if MICROPY_ESP32_USE_BOOTLOADER_RTC
+#if !CONFIG_IDF_TARGET_ESP32P4
 #include "soc/rtc_cntl_reg.h"
 #include "usb.h"
+#endif
 #if CONFIG_IDF_TARGET_ESP32S3
 #include "esp32s3/rom/usb/usb_dc.h"
 #include "esp32s3/rom/usb/usb_persist.h"
 #include "esp32s3/rom/usb/chip_usb_dw_wrapper.h"
+#elif CONFIG_IDF_TARGET_ESP32P4
+#include "driver/gpio.h"
 #endif
-
 static void machine_bootloader_rtc(void) {
     #if CONFIG_IDF_TARGET_ESP32S3 && MICROPY_HW_USB_CDC
     usb_usj_mode();
     usb_dc_prepare_persist();
     chip_usb_set_persist_flags(USBDC_BOOT_DFU);
     #endif
+    #if !CONFIG_IDF_TARGET_ESP32P4
     REG_WRITE(RTC_CNTL_OPTION1_REG, RTC_CNTL_FORCE_DOWNLOAD_BOOT);
     esp_restart();
+    #else
+    esp_rom_gpio_pad_select_gpio(GPIO_NUM_35);
+    gpio_set_direction(GPIO_NUM_35, GPIO_MODE_INPUT);
+    gpio_set_pull_mode(GPIO_NUM_35, GPIO_PULLDOWN_ONLY);
+
+    // 检测 GPIO35 的状态
+    if (gpio_get_level(GPIO_NUM_35) == 0) {
+        esp_restart();
+    }
+    #endif
 }
 #endif
 
 #ifdef MICROPY_BOARD_ENTER_BOOTLOADER
-MP_NORETURN void mp_machine_bootloader(size_t n_args, const mp_obj_t *args) {
+void mp_machine_bootloader(size_t n_args, const mp_obj_t *args) {
     MICROPY_BOARD_ENTER_BOOTLOADER(n_args, args);
     for (;;) {
     }

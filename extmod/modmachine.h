@@ -233,6 +233,7 @@ extern const mp_obj_dict_t mp_machine_spi_locals_dict;
 
 #if MICROPY_HW_ENABLE_USB_RUNTIME_DEVICE
 extern const mp_obj_type_t machine_usb_device_type;
+extern const mp_obj_type_t machine_usb_host_type;
 #endif
 
 #if defined(MICROPY_MACHINE_MEM_GET_READ_ADDR)

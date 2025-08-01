@@ -28,7 +28,6 @@
 #define MICROPY_INCLUDED_SHARED_TINYUSB_MP_USBD_H
 
 #include "py/mpconfig.h"
-
 #if MICROPY_HW_ENABLE_USBDEV
 
 #include "py/obj.h"

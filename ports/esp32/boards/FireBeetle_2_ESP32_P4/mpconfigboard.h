@@ -8,12 +8,15 @@
 #ifndef MICROPY_HW_MCU_NAME
 #define MICROPY_HW_MCU_NAME "ESP32P4"
 #endif
+#define MICROPY_HW_USB_HID 1
 
-
-#define MICROPY_HW_ENABLE_USB_RUNTIME_DEVICE 	(0)
-#define MICROPY_HW_ENABLE_USBDEV				(0)
-
+#define MICROPY_HW_ENABLE_USB_RUNTIME_DEVICE 	(1)
+#define MICROPY_HW_ENABLE_USBDEV				(1)
+#define HIL_DEVICE_HOST_MUX_PIN  47
+#define HIL_DEVICE_STATE         1
 #define MICROPY_PY_ESPNOW         	(0)
+#define MICROPY_HW_USB_HOST (1) 
+#define CFG_TUH_ENABLED     (1)
 
 #define MICROPY_PY_MACHINE_ADC              (1)
 #define MP_SD_LDO                           (1)
