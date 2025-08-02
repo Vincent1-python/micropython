@@ -62,19 +62,16 @@
 #ifndef CFG_TUSB_RHPORT0_MODE
 #define CFG_TUSB_RHPORT0_MODE   (OPT_MODE_DEVICE | OPT_MODE_HIGH_SPEED)
 #endif
-
+#define CFG_TUD_ENABLED       1
 #if MICROPY_HW_USB_CDC
 #define CFG_TUD_CDC             (1)
 #else
 #define CFG_TUD_CDC             (0)
 #endif
 
-#if MICROPY_HW_USB_MSC
-#define CFG_TUD_MSC             (1)
-#else
-#define CFG_TUD_MSC             (0)
-#endif
-#define CFG_TUD_HID  MICROPY_HW_USB_HID
+#define CFG_TUD_MSC             0
+
+#define CFG_TUD_HID             1
 // CDC Configuration
 #if CFG_TUD_CDC
 #ifndef CFG_TUD_CDC_RX_BUFSIZE
@@ -93,6 +90,8 @@
 // Set MSC EP buffer size to FatFS block size to avoid partial read/writes (offset arg).
 #define CFG_TUD_MSC_BUFSIZE (MICROPY_FATFS_MAX_SS)
 #endif
+// MSC Buffer size of Device Mass storage
+#define CFG_TUD_MSC_EP_BUFSIZE   512
 
 #define USBD_RHPORT (0) // Currently only one port is supported
 
