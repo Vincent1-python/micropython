@@ -51,6 +51,7 @@
 #include "py/repl.h"
 #include "py/gc.h"
 #include "py/mphal.h"
+#include "extmod/modmachine.h"
 #include "shared/readline/readline.h"
 #include "shared/runtime/pyexec.h"
 #include "shared/timeutils/timeutils.h"
@@ -201,6 +202,9 @@ soft_reset_exit:
     // TODO: machine_rmt_deinit_all();
     machine_pins_deinit();
     machine_deinit();
+    #if MICROPY_PY_MACHINE_I2C_TARGET
+    mp_machine_i2c_target_deinit_all();
+    #endif
     #if MICROPY_PY_SOCKET_EVENTS
     socket_events_deinit();
     #endif

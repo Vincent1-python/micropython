@@ -126,7 +126,7 @@ int machine_hw_i2c_transfer(mp_obj_base_t *self_in,
     i2c_device_config_t dev_cfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
         .device_address  = addr,
-        .scl_speed_hz    = 400000,   /* 沿用总线频率即可 */
+        .scl_speed_hz    = 100000,   /* 沿用总线频率即可 */
     };
     i2c_master_dev_handle_t dev_handle;
     err = i2c_master_bus_add_device(self->bus_handle, &dev_cfg, &dev_handle);
@@ -149,26 +149,51 @@ int machine_hw_i2c_transfer(mp_obj_base_t *self_in,
         --n;
         ++bufs;
     }
+    if (flags & MP_MACHINE_I2C_FLAG_READ) {
+	    /* 3. 主循环：剩余段 */
+	    for (; n--; ++bufs) {
+		if (bufs->len == 0) continue;
 
-    /* 3. 主循环：剩余段 */
-    for (; n--; ++bufs) {
-        if (bufs->len == 0) continue;
+        
+	        err = i2c_master_receive(dev_handle,
+	                             bufs->buf,
+	                             bufs->len,
+	                             1000);
+	        if (err != ESP_OK) break;
+                data_len += bufs->len;
+    }
+    } else {
+        // 写操作逻辑
+        size_t total_len = 0;
+        mp_machine_i2c_buf_t *original_bufs = bufs;  // 保存原始指针
+        size_t yuann=n;
 
-        if (flags & MP_MACHINE_I2C_FLAG_READ) {
-            /* 读段 */
-            err = i2c_master_receive(dev_handle,
-                                     bufs->buf,
-                                     bufs->len,
-                                     1000);
-        } else {
-            /* 写段 */
-            err = i2c_master_transmit(dev_handle,
-                                      bufs->buf,
-                                      bufs->len,
-                                      1000);
+        // 计算总长度
+        for (; n--; ++bufs) {
+            total_len += bufs->len;
         }
-        if (err != ESP_OK) break;
-        data_len += bufs->len;
+
+        // 重置指针
+        bufs = original_bufs;
+	// 重置n
+        n = yuann;
+        // 动态分配 write_buf
+        uint8_t *write_buf = (uint8_t *)malloc(total_len);
+        if (write_buf == NULL) return -MP_ENOMEM;
+
+        // 复制数据到 write_buf
+        size_t index = 0;
+        for (; n--; ++bufs) {
+            memcpy(write_buf + index, bufs->buf, bufs->len);
+            index += bufs->len;
+        }
+
+        // 发送数据
+        err = i2c_master_transmit(dev_handle, write_buf, total_len, 1000);
+        if (err != ESP_OK) goto cleanup;
+
+        // 释放动态分配的内存
+        free(write_buf);
     }
 
 cleanup:

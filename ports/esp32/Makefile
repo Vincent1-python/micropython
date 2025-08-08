@@ -43,8 +43,7 @@ PYTHON ?= python3
 
 .PHONY: all clean deploy erase submodules FORCE
 
-#CMAKE_ARGS =
-CMAKE_ARGS = -D MICROPY_FFMPEG=1 -D FFMPEG_LIBS="-lavformat -lavcodec -lavutil -lswscale -lm -lz -lpthread"
+CMAKE_ARGS =
 ifdef USER_C_MODULES
 	CMAKE_ARGS += -DUSER_C_MODULES=${USER_C_MODULES}
 endif
