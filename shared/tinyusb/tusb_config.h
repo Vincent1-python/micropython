@@ -60,13 +60,23 @@
 #endif
 
 #ifndef CFG_TUSB_RHPORT0_MODE
+#if CONFIG_IDF_TARGET_ESP32P4
+#define CFG_TUSB_RHPORT0_MODE   (OPT_MODE_DEVICE | OPT_MODE_HIGH_SPEED)
+#else
 #define CFG_TUSB_RHPORT0_MODE   (OPT_MODE_DEVICE)
+#endif
 #endif
 
 #if MICROPY_HW_USB_CDC
 #define CFG_TUD_CDC             (1)
 #else
 #define CFG_TUD_CDC             (0)
+#endif
+
+#if MICROPY_HW_USB_HID
+#define CFG_TUD_HID             (1)
+#else
+#define CFG_TUD_HID             (0)
 #endif
 
 #if MICROPY_HW_USB_MSC
