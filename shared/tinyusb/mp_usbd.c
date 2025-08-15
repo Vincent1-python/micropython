@@ -28,7 +28,6 @@
 
 #if MICROPY_HW_ENABLE_USBDEV
 #include "mp_usbd.h"
-
 #ifndef NO_QSTR
 #include "device/dcd.h"
 #endif

@@ -153,13 +153,13 @@ int machine_hw_i2c_transfer(mp_obj_base_t *self_in,
 	    /* 3. 主循环：剩余段 */
 	    for (; n--; ++bufs) {
 		if (bufs->len == 0) continue;
-
-        
-	        err = i2c_master_receive(dev_handle,
+                err = i2c_master_receive(dev_handle,
 	                             bufs->buf,
-	                             bufs->len,
+	                             //bufs->len,
+	                             1,
 	                             1000);
 	        if (err != ESP_OK) break;
+
                 data_len += bufs->len;
     }
     } else {

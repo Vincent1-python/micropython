@@ -81,8 +81,9 @@ list(APPEND MICROPY_SOURCE_DRIVERS
 )
 
 
+list(APPEND GIT_SUBMODULES lib/tinyusb)
 string(TOUPPER OPT_MCU_${IDF_TARGET} tusb_mcu)
-
+set(TINYUSB_SRC "${MICROPY_DIR}/lib/tinyusb/src")
 list(APPEND MICROPY_DEF_TINYUSB
 CFG_TUSB_MCU=${tusb_mcu}
 )
@@ -92,9 +93,18 @@ ${MICROPY_DIR}/shared/tinyusb/mp_usbd.c
 ${MICROPY_DIR}/shared/tinyusb/mp_usbd_cdc.c
 ${MICROPY_DIR}/shared/tinyusb/mp_usbd_descriptor.c
 ${MICROPY_DIR}/shared/tinyusb/mp_usbd_runtime.c
+${TINYUSB_SRC}/tusb.c
+${TINYUSB_SRC}/common/tusb_fifo.c
+${TINYUSB_SRC}/device/usbd.c
+${TINYUSB_SRC}/device/usbd_control.c
+${TINYUSB_SRC}/class/cdc/cdc_device.c
+${TINYUSB_SRC}/class/hid/hid_device.c
+${TINYUSB_SRC}/portable/synopsys/dwc2/dcd_dwc2.c
+
 )
 
 list(APPEND MICROPY_INC_TINYUSB
+${TINYUSB_SRC}/
 ${MICROPY_DIR}/shared/tinyusb/
 )
 
@@ -189,8 +199,6 @@ list(APPEND IDF_COMPONENTS
     ulp
     usb
     vfs
-    tinyusb
-    esp_tinyusb
 )
 
 # Provide the default LD fragment if not set
@@ -274,7 +282,7 @@ target_include_directories(${MICROPY_TARGET} PUBLIC
 )
 
 # Add additional extmod and usermod components.
-target_link_libraries(${MICROPY_TARGET} micropy_extmod_btree)
+target_link_libraries(${MICROPY_TARGET} $<TARGET_OBJECTS:micropy_extmod_btree>)
 
 target_link_libraries(${MICROPY_TARGET} usermod)
 

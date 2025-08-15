@@ -7,19 +7,17 @@ dependencies:
   sensor_init:
     path: ${IDF_PATH}/examples/peripherals/camera/common_components/sensor_init
   espressif/human_face_detect:
-    override_path: /home/le/c_mod/mp_esp_dl_models/esp-dl/models/human_face_detect
+    override_path: ../../../../../c_mod/mp_esp_dl_models/esp-dl/models/human_face_detect
   espressif/human_face_recognition:
-    override_path: /home/le/c_mod/mp_esp_dl_models/esp-dl/models/human_face_recognition
+    override_path: ../../../../../c_mod/mp_esp_dl_models/esp-dl/models/human_face_recognition
   espressif/pedestrian_detect:
-    override_path: /home/le/c_mod/mp_esp_dl_models/esp-dl/models/pedestrian_detect
+    override_path: ../../../../../c_mod/mp_esp_dl_models/esp-dl/models/pedestrian_detect
   espressif/imagenet_cls:
-    override_path: /home/le/c_mod/mp_esp_dl_models/esp-dl/models/imagenet_cls
+    override_path: ../../../../../c_mod/mp_esp_dl_models/esp-dl/models/imagenet_cls
   espressif/coco_detect:
-    override_path: /home/le/c_mod/mp_esp_dl_models/esp-dl/models/coco_detect
+    override_path: ../../../../../c_mod/mp_esp_dl_models/esp-dl/models/coco_detect
   espressif/cat_detect:
-    override_path: /home/le/c_mod/mp_esp_dl_models/esp-dl/models/cat_detect
-  espressif/esp_lcd_ek79007: "^0.1.0"
-  espressif/i2c_bus: ^1.3.0
+    override_path: ../../../../../c_mod/mp_esp_dl_models/esp-dl/models/cat_detect
   espressif/esp_hosted:
     version: 1.4.0
   espressif/esp_wifi_remote:

@@ -65,7 +65,7 @@ endif
 ifeq ($(BUILD_VERBOSE),1)
 	IDFPY_FLAGS += --verbose
 endif
-
+IDFPY_FLAGS += -D CCACHE_ENABLE=1
 HELP_BUILD_ERROR ?= "See \033[1;31mhttps://github.com/micropython/micropython/wiki/Build-Troubleshooting\033[0m"
 
 define RUN_IDF_PY
