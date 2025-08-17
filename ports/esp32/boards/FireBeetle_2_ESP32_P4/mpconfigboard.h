@@ -1,0 +1,40 @@
+// Both of these can be set by mpconfigboard.cmake if a BOARD_VARIANT is
+// specified.
+
+#ifndef MICROPY_HW_BOARD_NAME
+#define MICROPY_HW_BOARD_NAME "FireBeetle 2 ESP32 P4"
+#endif
+
+#ifndef MICROPY_HW_MCU_NAME
+#define MICROPY_HW_MCU_NAME "ESP32P4"
+#endif
+#define MICROPY_HW_USB_HID 1
+
+#define MICROPY_HW_ENABLE_USB_RUNTIME_DEVICE 	(1)
+#define MICROPY_HW_ENABLE_USBDEV				(1)
+#define HIL_DEVICE_HOST_MUX_PIN  47
+#define HIL_DEVICE_STATE         1
+#define MICROPY_PY_ESPNOW         	(0)
+#ifndef MICROPY_HW_USB_HOST
+#define MICROPY_HW_USB_HOST (1) // Support machine.USBHost
+#endif
+
+#define MICROPY_PY_MACHINE_ADC              (1)
+#define MP_SD_LDO                           (1)
+#ifndef USB_SERIAL_JTAG_PACKET_SZ_BYTES
+#define USB_SERIAL_JTAG_PACKET_SZ_BYTES (64)
+#endif
+
+// Enable UART REPL for modules that have an external USB-UART and don't use native USB.
+#define MICROPY_HW_ENABLE_UART_REPL         	(1)
+
+#define MICROPY_PY_MACHINE_I2S (1)
+
+/*
+#define MICROPY_HW_I2C0_SCL      (32)
+#define MICROPY_HW_I2C0_SDA      (31)
+
+#define MICROPY_HW_SPI1_MOSI                (44)
+#define MICROPY_HW_SPI1_MISO                (39)
+#define MICROPY_HW_SPI1_SCK                 (43)
+*/

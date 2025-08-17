@@ -3,8 +3,16 @@ dependencies:
   espressif/mdns: "~1.1.0"
   espressif/esp_tinyusb:
     rules:
-      - if: "target in [esp32s2, esp32s3]"
-    version: "~1.0.0"
+      - if: "target in [esp32s2, esp32s3, esp32p4]"
+    version: "1.7.6~1"
+  espressif/esp_hosted:
+    rules:
+      - if: "target == esp32p4"
+    version: 1.4.0
+  espressif/esp_wifi_remote:
+    rules:
+      - if: "target == esp32p4"
+    version: 0.8.5
   espressif/lan867x:
     version: "~1.0.0"
     rules:

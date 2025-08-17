@@ -1,0 +1,10 @@
+set(IDF_TARGET esp32p4)
+
+set(SDKCONFIG_DEFAULTS
+    boards/sdkconfig.base
+	boards/FireBeetle_2_ESP32_P4/sdkconfig.board
+)
+set(MP_DL_FACE_RECOGNITION_ENABLED 1)
+set(MP_DL_COCO_DETECTOR_ENABLED 1)
+set(MP_DL_PEDESTRISN_DETECTOR_ENABLED 1)
+set(MP_DL_IMAGENET_CLS_ENABLED 0)
