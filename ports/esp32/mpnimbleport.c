@@ -37,14 +37,7 @@
 
 #include "extmod/nimble/modbluetooth_nimble.h"
 
-#if CONFIG_ESP_HOSTED_ENABLED
-//extern ble_transport_ll_deinit(void);
-extern void ble_transport_ll_deinit(void)
-{
-    // https://github.com/espressif/esp-hosted-mcu/issues/27
-	DEBUG_printf("deinit avoided (hosted ble)\n");
-}
-#endif
+
 
 static void ble_host_task(void *param) {
     DEBUG_printf("ble_host_task\n");

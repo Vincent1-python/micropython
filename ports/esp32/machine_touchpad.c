@@ -29,7 +29,7 @@
 #include "modmachine.h"
 #include "driver/gpio.h"
 
-#if SOC_TOUCH_SENSOR_SUPPORTED //&& !CONFIG_IDF_TARGET_ESP32P4
+#if SOC_TOUCH_SENSOR_SUPPORTED
 
 #if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 3, 0)
 #if SOC_TOUCH_VERSION_1
@@ -41,9 +41,9 @@
 
 #if SOC_TOUCH_SENSOR_VERSION == 1 // ESP32 only
 #include "driver/touch_pad.h"
-#elif SOC_TOUCH_SENSOR_VERSION == 2 // All other SoCs with touch, to date
+#elif SOC_TOUCH_SENSOR_VERSION == 2 // most ESP32
 #include "driver/touch_sensor.h"
-#elif SOC_TOUCH_SENSOR_VERSION == 3 // All other SoCs with touch, to date
+#elif SOC_TOUCH_SENSOR_VERSION == 3 // At present, it can only be used on ESP32P4.
 #include "driver/touch_sens.h"
 #else
 #error "Unknown touch hardware version"
@@ -56,15 +56,13 @@ typedef struct _mtp_obj_t {
     touch_pad_t touchpad_id;
 #elif SOC_TOUCH_SENSOR_VERSION == 3
     int touchpad_id;
+    touch_sensor_handle_t  s_sens_handle;
+    touch_channel_handle_t s_chan_handle[15];
+    uint32_t benchmark[14];
 #endif
 } mtp_obj_t;
-#if SOC_TOUCH_SENSOR_VERSION == 3
-static touch_sensor_handle_t  s_sens_handle = NULL;
-static touch_channel_handle_t s_chan_handle[15] = {};
-uint32_t benchmark[14] = {};
-int i;
-#endif
-static const mtp_obj_t touchpad_obj[] = {
+
+static mtp_obj_t touchpad_obj[] = {
     #if CONFIG_IDF_TARGET_ESP32
     {{&machine_touchpad_type}, GPIO_NUM_4, TOUCH_PAD_NUM0},
     {{&machine_touchpad_type}, GPIO_NUM_0, TOUCH_PAD_NUM1},
@@ -132,39 +130,38 @@ static mp_obj_t mtp_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_
         touch_pad_init();
         touch_pad_set_fsm_mode(TOUCH_FSM_MODE_TIMER);
     #elif SOC_TOUCH_SENSOR_VERSION == 3
-    	touch_sensor_sample_config_t sample_cfg[3] = {
+        static int i = 0;
+    	touch_sensor_sample_config_t sample_cfg[1] = {
 		TOUCH_SENSOR_V3_DEFAULT_SAMPLE_CONFIG(1, 1, 1),
-        	TOUCH_SENSOR_V3_DEFAULT_SAMPLE_CONFIG(2, 1, 1),
-        	TOUCH_SENSOR_V3_DEFAULT_SAMPLE_CONFIG(4, 1, 1),
 	};
-	touch_sensor_config_t sens_cfg = TOUCH_SENSOR_DEFAULT_BASIC_CONFIG(3, sample_cfg);
-        esp_err_t err = touch_sensor_new_controller(&sens_cfg, &s_sens_handle);
+	touch_sensor_config_t sens_cfg = TOUCH_SENSOR_DEFAULT_BASIC_CONFIG(1, sample_cfg);
+        esp_err_t err = touch_sensor_new_controller(&sens_cfg, (touch_sensor_handle_t *)&self->s_sens_handle);
 	if (err != ESP_OK) {
-    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 1"));
+    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error"));
     	}
         /* Configure the touch sensor filter */
         touch_sensor_filter_config_t filter_cfg = TOUCH_SENSOR_DEFAULT_FILTER_CONFIG();
-        err = touch_sensor_config_filter(s_sens_handle, &filter_cfg);
+        err = touch_sensor_config_filter(self->s_sens_handle, &filter_cfg);
         if (err != ESP_OK) {
-    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 2"));
+    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error"));
     	}
         touch_channel_config_t chan_cfg = {
-        .active_thresh = {1000, 2500, 5000},
+        .active_thresh = {1000},
         };
         
         for(i = 0; i < 14; i++) {
-        	err = touch_sensor_new_channel(s_sens_handle, i, &chan_cfg, &s_chan_handle[i]);
-    	};
-    	if (err != ESP_OK) {
-    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 3"));
+        	err = touch_sensor_new_channel(self->s_sens_handle, i, &chan_cfg, (touch_channel_handle_t *)&self->s_chan_handle[i]);
     	}
-    	err = touch_sensor_enable(s_sens_handle);
     	if (err != ESP_OK) {
-    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 4"));
+    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error"));
     	}
-    	err = touch_sensor_start_continuous_scanning(s_sens_handle);
+    	err = touch_sensor_enable(self->s_sens_handle);
     	if (err != ESP_OK) {
-    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 5"));
+    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error"));
+    	}
+    	err = touch_sensor_start_continuous_scanning(self->s_sens_handle);
+    	if (err != ESP_OK) {
+    	   mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error"));
     	}
     #endif
         initialized = 1;
@@ -183,9 +180,9 @@ static mp_obj_t mtp_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_
 
         return MP_OBJ_FROM_PTR(self);
     }
-    mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 6"));
+    mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error"));
 }
-
+#if SOC_TOUCH_SENSOR_VERSION == 1 || SOC_TOUCH_SENSOR_VERSION == 2
 static mp_obj_t mtp_config(mp_obj_t self_in, mp_obj_t value_in) {
     mtp_obj_t *self = self_in;
     #if SOC_TOUCH_SENSOR_VERSION == 1
@@ -193,16 +190,14 @@ static mp_obj_t mtp_config(mp_obj_t self_in, mp_obj_t value_in) {
     esp_err_t err = touch_pad_config(self->touchpad_id, value);
     #elif SOC_TOUCH_SENSOR_VERSION == 2
     esp_err_t err = touch_pad_config(self->touchpad_id);
-    #elif SOC_TOUCH_SENSOR_VERSION == 3
-    esp_err_t err = ESP_OK;
     #endif
     if (err == ESP_OK) {
         return mp_const_none;
     }
-    mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 7"));
+    mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error"));
 }
 MP_DEFINE_CONST_FUN_OBJ_2(mtp_config_obj, mtp_config);
-
+#endif
 static mp_obj_t mtp_read(mp_obj_t self_in) {
     mtp_obj_t *self = self_in;
     #if SOC_TOUCH_SENSOR_VERSION == 1
@@ -212,20 +207,22 @@ static mp_obj_t mtp_read(mp_obj_t self_in) {
     uint32_t value;
     esp_err_t err = touch_pad_read_raw_data(self->touchpad_id, &value);
     #elif SOC_TOUCH_SENSOR_VERSION == 3     
-    esp_err_t err = touch_channel_read_data(s_chan_handle[self->touchpad_id], TOUCH_CHAN_DATA_TYPE_BENCHMARK, benchmark);
+    esp_err_t err = touch_channel_read_data(self->s_chan_handle[self->touchpad_id], TOUCH_CHAN_DATA_TYPE_BENCHMARK, self->benchmark);
     uint32_t value;
-    value = benchmark[self->touchpad_id];
+    value = self->benchmark[self->touchpad_id];
     #endif
     if (err == ESP_OK) {
         return MP_OBJ_NEW_SMALL_INT(value);
     }
-    mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error 8"));
+    mp_raise_ValueError(MP_ERROR_TEXT("Touch pad error"));
 }
 MP_DEFINE_CONST_FUN_OBJ_1(mtp_read_obj, mtp_read);
 
 static const mp_rom_map_elem_t mtp_locals_dict_table[] = {
     // instance methods
+    #if SOC_TOUCH_SENSOR_VERSION == 1 || SOC_TOUCH_SENSOR_VERSION == 2
     { MP_ROM_QSTR(MP_QSTR_config), MP_ROM_PTR(&mtp_config_obj) },
+    #endif
     { MP_ROM_QSTR(MP_QSTR_read), MP_ROM_PTR(&mtp_read_obj) },
 };
 

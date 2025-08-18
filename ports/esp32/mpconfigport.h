@@ -276,11 +276,6 @@
 #define MICROPY_HW_USB_CDC                  (MICROPY_HW_ENABLE_USBDEV)
 #endif
 
-// Enable stdio over native USB peripheral HID via TinyUSB
-#ifndef MICROPY_HW_USB_HID
-#define MICROPY_HW_USB_HID                  (MICROPY_HW_USB_CDC)
-#endif
-
 // Enable stdio over USB Serial/JTAG peripheral
 #ifndef MICROPY_HW_ESP_USB_SERIAL_JTAG
 #if !CONFIG_IDF_TARGET_ESP32P4

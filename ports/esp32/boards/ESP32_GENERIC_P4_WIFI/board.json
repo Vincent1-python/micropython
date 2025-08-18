@@ -15,9 +15,9 @@
         ""
     ],
     "mcu": "esp32p4",
-    "product": "M5STACK TAB5",
+    "product": "Expressif ESP32P4",
     "thumbnail": "",
-    "url": "https://docs.m5stack.com/en/core/Tab5",
+    "url": "https://www.espressif.com/en/products/modules",
     "variants": {
     },
     "vendor": "Espressif"

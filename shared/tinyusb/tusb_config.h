@@ -73,12 +73,6 @@
 #define CFG_TUD_CDC             (0)
 #endif
 
-#if MICROPY_HW_USB_HID
-#define CFG_TUD_HID             (1)
-#else
-#define CFG_TUD_HID             (0)
-#endif
-
 #if MICROPY_HW_USB_MSC
 #define CFG_TUD_MSC             (1)
 #else
