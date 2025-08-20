@@ -4,5 +4,4 @@ set(SDKCONFIG_DEFAULTS
     boards/sdkconfig.base
     boards/sdkconfig.c6
     boards/sdkconfig.ble
-    boards/ESP32_GENERIC_C6/sdkconfig.board
 )
