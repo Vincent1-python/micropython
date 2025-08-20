@@ -39,11 +39,6 @@
 #include "driver/sdspi_host.h"
 #include "sdmmc_cmd.h"
 #include "esp_log.h"
-#if MP_SD_LDO
-#include "esp_ldo_regulator.h"
-#include "sd_pwr_ctrl_by_on_chip_ldo.h"
-static sd_pwr_ctrl_handle_t pwr_ctrl_handle;
-#endif
 #define DEBUG 0
 #if DEBUG
 #define DEBUG_printf(...) ESP_LOGI("modsdcard", __VA_ARGS__)
