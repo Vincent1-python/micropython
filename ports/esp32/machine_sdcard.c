@@ -39,6 +39,7 @@
 #include "driver/sdspi_host.h"
 #include "sdmmc_cmd.h"
 #include "esp_log.h"
+
 #define DEBUG 0
 #if DEBUG
 #define DEBUG_printf(...) ESP_LOGI("modsdcard", __VA_ARGS__)
@@ -419,7 +420,7 @@ static mp_obj_t sd_deinit(mp_obj_t self_in) {
     sdcard_card_obj_t *self = self_in;
 
     DEBUG_printf("De-init host\n");
-	
+
     if (self->flags & SDCARD_CARD_FLAGS_HOST_INIT_DONE) {
         if (self->host.flags & SDMMC_HOST_FLAG_DEINIT_ARG) {
             self->host.deinit_p(self->host.slot);
