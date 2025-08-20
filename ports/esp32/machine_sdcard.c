@@ -405,8 +405,9 @@ static mp_obj_t machine_sdcard_make_new(const mp_obj_type_t *type, size_t n_args
             }
         }
         #endif
-	DEBUG_printf("  Calling init_slot()");
-	check_esp_err(sdmmc_host_init_slot(self->host.slot, &slot_config));
+		
+	    DEBUG_printf("  Calling init_slot()");
+	    check_esp_err(sdmmc_host_init_slot(self->host.slot, &slot_config));
     }
     #endif // SOC_SDMMC_HOST_SUPPORTED
 
