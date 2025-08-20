@@ -2,7 +2,7 @@
 // specified.
 
 #ifndef MICROPY_HW_BOARD_NAME
-#define MICROPY_HW_BOARD_NAME "Generic ESP32P4 module (wifi) "
+#define MICROPY_HW_BOARD_NAME "Generic ESP32P4 module"
 #endif
 
 #ifndef MICROPY_HW_MCU_NAME
