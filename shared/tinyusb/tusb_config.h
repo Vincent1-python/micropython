@@ -59,6 +59,9 @@
 #define MICROPY_HW_USB_MSC_INQUIRY_REVISION_STRING "1.00"
 #endif
 
+#define CFG_TUD_ENABLED          (1)
+#define CFG_TUH_ENABLED          (0)
+
 #ifndef CFG_TUSB_RHPORT0_MODE
 #if CONFIG_IDF_TARGET_ESP32P4
 #define CFG_TUSB_RHPORT0_MODE   (OPT_MODE_DEVICE | OPT_MODE_HIGH_SPEED)
@@ -98,7 +101,7 @@
 #define CFG_TUD_MSC_BUFSIZE (MICROPY_FATFS_MAX_SS)
 #endif
 
-#define USBD_RHPORT (0) // Currently only one port is supported
+#define USBD_RHPORT (0) 
 
 // Define built-in interface, string and endpoint numbering based on the above config
 

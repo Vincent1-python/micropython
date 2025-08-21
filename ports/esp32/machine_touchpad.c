@@ -52,11 +52,11 @@
 typedef struct _mtp_obj_t {
     mp_obj_base_t base;
     gpio_num_t gpio_id;
-#if SOC_TOUCH_SENSOR_VERSION == 1 || SOC_TOUCH_SENSOR_VERSION == 2
+    #if SOC_TOUCH_SENSOR_VERSION == 1 || SOC_TOUCH_SENSOR_VERSION == 2
     touch_pad_t touchpad_id;
-#elif SOC_TOUCH_SENSOR_VERSION == 3
+    #elif SOC_TOUCH_SENSOR_VERSION == 3
     int touchpad_id;
-    touch_sensor_handle_t  s_sens_handle;
+    touch_sensor_handle_t s_sens_handle;
     touch_channel_handle_t s_chan_handle[15];
     uint32_t benchmark[14];
 #endif
