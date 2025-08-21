@@ -101,7 +101,7 @@
 #define CFG_TUD_MSC_BUFSIZE (MICROPY_FATFS_MAX_SS)
 #endif
 
-#define USBD_RHPORT (0) 
+#define USBD_RHPORT (0)  // Currently only one port is supported
 
 // Define built-in interface, string and endpoint numbering based on the above config
 
