@@ -21,12 +21,3 @@
 #define MICROPY_HW_ENABLE_UART_REPL             (1)
 
 #define MICROPY_PY_MACHINE_I2S (1)
-
-/*
-#define MICROPY_HW_I2C0_SCL      (32)
-#define MICROPY_HW_I2C0_SDA      (31)
-
-#define MICROPY_HW_SPI1_MOSI                (44)
-#define MICROPY_HW_SPI1_MISO                (39)
-#define MICROPY_HW_SPI1_SCK                 (43)
-*/
