@@ -4,5 +4,4 @@ set(SDKCONFIG_DEFAULTS
     boards/sdkconfig.base
     boards/sdkconfig.p4
     boards/sdkconfig.p4usb
-	boards/ESP32_GENERIC_P4/sdkconfig.board
 )
