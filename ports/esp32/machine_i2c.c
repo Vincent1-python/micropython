@@ -185,6 +185,6 @@ MP_DEFINE_CONST_OBJ_TYPE(
     print, machine_hw_i2c_print,
     protocol, &machine_hw_i2c_p,
     locals_dict, &mp_machine_i2c_locals_dict
-    );
+);
 
 #endif // MICROPY_PY_MACHINE_I2C || MICROPY_PY_MACHINE_SOFTI2C
