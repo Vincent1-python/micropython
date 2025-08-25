@@ -95,7 +95,7 @@ static int machine_i2c_transfer_single(mp_obj_base_t *self_in, uint16_t addr, si
         // 3. Transfer data
         if (flags & MP_MACHINE_I2C_FLAG_READ) {
             err = i2c_master_receive(dev_handle, buf, len, self->timeout_us / 1000);
-        } else if (len > 0) {
+        } else {
             err = i2c_master_transmit(dev_handle, buf, len, self->timeout_us / 1000);
         }
         // 4. Destroy the temporary handle
